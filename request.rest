@@ -1,0 +1,81 @@
+########################
+
+### TEST SERVER
+GET http://localhost:5000/test
+
+
+### CREATE ADMIN USER
+POST http://localhost:5000/users
+Content-Type: application/json
+
+{
+    "name": "admin",
+    "email": "admin@gmail.com",
+    "password": "123456",
+    "confPassword": "123456",
+    "role": "admin"
+}
+
+
+### LOGIN ADMIN
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+    "email": "admin@gmail.com",
+    "password": "123456"
+}
+
+
+### GET USERS
+GET http://localhost:5000/users
+
+
+### 🔹 CREATE ISSUE
+POST http://localhost:5000/issues
+Content-Type: application/json
+
+{
+    "description": "Server is down",
+    "priority": "High",
+    "status": "Open",
+    "completed_by": "",
+    "started_by": "John",
+    "petitioner_name": "Jane Doe",
+    "contact_type": "email",
+    "contact_value": "jane@example.com",
+    "related_to_indicators": "uptime",
+    "indicator_code": "SRV-UP-001",
+    "organizations_id": 1
+}
+
+
+### 🔹 GET ALL ISSUES
+GET http://localhost:5000/issues
+
+
+### 🔹 GET ISSUE BY ID
+GET http://localhost:5000/issues/1
+
+
+### 🔹 UPDATE ISSUE
+PATCH http://localhost:5000/issues/1
+Content-Type: application/json
+
+{
+    "description": "Server is down - urgent fix needed",
+    "priority": "Critical",
+    "status": "In Progress",
+    "completed_by": "",
+    "started_by": "John",
+    "petitioner_name": "Jane Doe",
+    "contact_type": "email",
+    "contact_value": "jane@example.com",
+    "related_to_indicators": "uptime",
+    "indicator_code": "SRV-UP-001",
+    "organizations_id": 1
+}
+
+
+### 🔹 DELETE ISSUE
+DELETE http://localhost:5000/issues/1
