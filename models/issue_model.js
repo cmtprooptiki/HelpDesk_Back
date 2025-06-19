@@ -1,6 +1,9 @@
 import { Sequelize } from "sequelize";
 import db from "../config/database.js";
 import Organizations from "./organization_model.js";
+import Users from "./user_model.js"; // Assuming you have a Users model
+import Categories from "./category_model.js"; // Assuming you have a Categories model
+import Solutions from "./solution_model.js"; // Assuming you have a Solutions model
 
 const { DataTypes } = Sequelize;
 
@@ -19,7 +22,11 @@ const Issues = db.define("issues", {
     status: {
         type: DataTypes.STRING
     },
-    completed_by: {
+    severity:
+    {
+        type: DataTypes.STRING
+    },
+    assigned_to: {
         type: DataTypes.STRING
     },
     started_by: {
@@ -47,6 +54,38 @@ const Issues = db.define("issues", {
             key: "id"
         },
         allowNull: false
+    },
+    startDate: {
+        type: DataTypes.DATE,
+        allowNull: true
+    },
+    endDate: {
+        type: DataTypes.DATE,
+        allowNull: true
+    },
+    user_id: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: Users,
+            key: "id"
+        },
+        allowNull: false
+    },
+    category_id: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: Categories,
+            key: "id"
+        },
+        allowNull: false
+    },
+    solution_id: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: Solutions,
+            key: "id"
+        },
+        allowNull: true
     }
 }, {
     freezeTableName: true
@@ -55,11 +94,11 @@ const Issues = db.define("issues", {
 // Define association
 Organizations.hasMany(Issues, { foreignKey: "organizations_id" });
 Issues.belongsTo(Organizations, { foreignKey: "organizations_id" });
-
-// Issues.belongsToMany(Indicators, {
-//     through: IndicatorsHasIssues,
-//     foreignKey: "issues_id",
-//     otherKey: "indicators_id"
-// });
+Users.hasMany(Issues, { foreignKey: "user_id" });
+Issues.belongsTo(Users, { foreignKey: "user_id" });
+Categories.hasMany(Issues, { foreignKey: "category_id" });
+Issues.belongsTo(Categories, { foreignKey: "category_id" });
+Solutions.hasMany(Issues, { foreignKey: "solution_id" });
+Issues.belongsTo(Solutions, { foreignKey: "solution_id" });
 
 export default Issues;

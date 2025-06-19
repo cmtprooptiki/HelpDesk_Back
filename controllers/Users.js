@@ -7,7 +7,7 @@ export const getUsers = async(req,res)=>{
     
     try{
         const response = await User.findAll({
-            attributes:['uuid','name','email','role']
+            attributes:['id','uuid','name','email','role']
         });
         res.status(200).json(response);
     } catch(error){
@@ -20,7 +20,7 @@ export const getUsers = async(req,res)=>{
 export const getUserById = async(req,res)=>{
     try{
         const response = await User.findOne({
-            attributes:['uuid','name','email','role'],
+            attributes:['id','uuid','name','email','role'],
             where:{
                 uuid:req.params.id
             }

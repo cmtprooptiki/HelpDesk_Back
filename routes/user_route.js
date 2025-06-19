@@ -32,13 +32,13 @@ import { verifyUser, adminOnly } from "../middleware/auth_user.js";
 const router = express.Router();
 
 // Routes
-router.get('/users', verifyUser, adminOnly, getUsers);
-router.get('/users/:id', verifyUser, adminOnly, getUserById);
+router.get('/users', verifyUser, getUsers);
+router.get('/users/:id', verifyUser,  getUserById);
 
 // Profile image upload routes
 router.post('/users' ,createUser);
-router.patch('/users/:id', verifyUser, adminOnly, updateUser);
+router.patch('/users/:id', verifyUser,  updateUser);
 
-router.delete('/users/:id', verifyUser, adminOnly, deleteUser);
+router.delete('/users/:id', verifyUser, deleteUser);
 
 export default router;

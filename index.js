@@ -13,12 +13,16 @@ import authRouter from "./routes/auth_route.js";
 import issuesRouter from "./routes/issue_route.js"
 import organizationsRouter from "./routes/organization_route.js";
 import indicatorRouter from "./routes/indicator_route.js"
+import category_Router from "./routes/category_route.js";
+import solutionRouter from "./routes/solution_route.js";
 
 import Users from "./models/user_model.js";
 import Organizations from "./models/organization_model.js";
 import Issues from "./models/issue_model.js";
 import Indicators from "./models/indicators_model.js";
 import IndicatorsHasIssues from "./models/indicators_issues_model.js";
+import Categories from "./models/category_model.js";
+import Solutions from "./models/solution_model.js";
 
 dotenv.config()
 
@@ -40,6 +44,8 @@ const store = new sessionStore({
     await Issues.sequelize.sync();
     await Indicators.sequelize.sync();
     await IndicatorsHasIssues.sequelize.sync();
+    await Categories.sequelize.sync();
+    await Solutions.sequelize.sync();
 })();
 
 
@@ -79,6 +85,8 @@ app.use(authRouter);
 app.use(issuesRouter);
 app.use(organizationsRouter);
 app.use(indicatorRouter);
+app.use(category_Router);
+app.use(solutionRouter);
 
 // var routes = require("./routes/routes.js")(app);
 

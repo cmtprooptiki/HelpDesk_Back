@@ -12,18 +12,18 @@ import { verifyUser, adminOnly } from "../middleware/auth_user.js";
 const router = express.Router();
 
 // GET all organizations (admin only)
-router.get('/organizations', verifyUser, adminOnly, getOrganizations);
+router.get('/organizations', verifyUser, getOrganizations);
 
 // GET organization by ID
-router.get('/organizations/:id', verifyUser, adminOnly, getOrganizationById);
+router.get('/organizations/:id', verifyUser, getOrganizationById);
 
 // POST new organization
-router.post('/organizations', verifyUser, adminOnly, createOrganization);
+router.post('/organizations', verifyUser,createOrganization);
 
 // PATCH update organization
-router.patch('/organizations/:id', verifyUser, adminOnly, updateOrganization);
+router.patch('/organizations/:id', verifyUser, updateOrganization);
 
 // DELETE organization
-router.delete('/organizations/:id', verifyUser, adminOnly, deleteOrganization);
+router.delete('/organizations/:id', verifyUser, deleteOrganization);
 
 export default router;
