@@ -30,11 +30,11 @@ export const createSolution = async (req, res) => {
     const { solution_title, solution_desc } = req.body;
 
     try {
-        await Solutions.create({
+        const solution = await Solutions.create({
             solution_title,
             solution_desc
         });
-        res.status(201).json({ msg: "Solution created successfully" });
+        res.status(201).json(solution);
     } catch (error) {
         res.status(400).json({ msg: error.message });
     }
