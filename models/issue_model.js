@@ -55,6 +55,9 @@ const Issues = db.define("issues", {
         },
         allowNull: false
     },
+    keywords: {
+    type: DataTypes.STRING // comma-separated, e.g., "vpn,remote_access,error"
+    },
     startDate: {
         type: DataTypes.DATE,
         allowNull: true
@@ -86,7 +89,7 @@ const Issues = db.define("issues", {
             key: "id"
         },
         allowNull: true
-    }
+    },
 }, {
     freezeTableName: true
 });

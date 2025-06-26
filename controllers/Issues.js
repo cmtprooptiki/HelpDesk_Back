@@ -1,6 +1,15 @@
 import Issue from "../models/issue_model.js";
 import Organization from "../models/organization_model.js"; // optional for include
 import Categories from "../models/category_model.js";
+import OpenAI from "openai";
+import dotenv from "dotenv";
+dotenv.config();
+
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
+
 // GET all issues
 export const getIssues = async (req, res) => {
     try {
@@ -44,6 +53,53 @@ export const getIssueById = async (req, res) => {
 };
 
 // CREATE new issue
+// export const createIssue = async (req, res) => {
+//     const {
+//         description,
+//         priority,
+//         status,
+//         severity,
+//         assigned_to,
+//         started_by,
+//         petitioner_name,
+//         contact_type,
+//         contact_value,
+//         related_to_indicators,
+//         indicator_code,
+//         organizations_id,
+//         startDate,
+//         endDate,
+//         user_id,
+//         category_id,
+//         solution_id
+//     } = req.body;
+
+//     try {
+//         await Issue.create({
+//             description,
+//             priority,
+//             status,
+//             severity,
+//             assigned_to,
+//             started_by,
+//             petitioner_name,
+//             contact_type,
+//             contact_value,
+//             related_to_indicators,
+//             indicator_code,
+//             organizations_id,
+//             startDate,
+//             endDate,
+//             user_id,
+//             category_id,
+//             solution_id 
+//         });
+//         res.status(201).json({ msg: "Issue created successfully" });
+//     } catch (error) {
+//         res.status(400).json({ msg: error.message });
+//     }
+// };
+
 export const createIssue = async (req, res) => {
     const {
         description,
@@ -66,7 +122,33 @@ export const createIssue = async (req, res) => {
     } = req.body;
 
     try {
-        await Issue.create({
+        // ✅ GPT-4 keyword extraction using correct v4 method
+        const openaiRes = await openai.chat.completions.create({
+            model: "gpt-4",
+            messages: [
+                {
+                    role: "system",
+                    content: "Extract 3 to 5 short, technical keywords or phrases from the issue description. Return them in comma-separated format. No hashtags or explanations."
+                },
+                {
+                    role: "user",
+                    content: description
+                }
+            ]
+        });
+
+        const keywordRaw = openaiRes.choices[0].message.content.trim(); // e.g. "vpn, remote access, error"
+       // const keywords = keywordRaw.toLowerCase().replace(/\s+/g, '_'); // optional normalization
+
+        const keywords = keywordRaw
+          .toLowerCase()
+          .split(",")
+          .map((k) => k.trim().replace(/\s+/g, "-"))
+          .join(",");
+
+
+        // ✅ Save issue with extracted keywords
+        const issue = await Issue.create({
             description,
             priority,
             status,
@@ -83,13 +165,20 @@ export const createIssue = async (req, res) => {
             endDate,
             user_id,
             category_id,
-            solution_id 
+            solution_id,
+            keywords
         });
-        res.status(201).json({ msg: "Issue created successfully" });
+
+        res.status(201).json({
+            msg: "Issue created successfully",
+            issue
+        });
     } catch (error) {
+        console.error(error);
         res.status(400).json({ msg: error.message });
     }
 };
+
 
 // UPDATE issue by ID
 export const updateIssue = async (req, res) => {

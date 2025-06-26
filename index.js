@@ -15,6 +15,7 @@ import organizationsRouter from "./routes/organization_route.js";
 import indicatorRouter from "./routes/indicator_route.js"
 import category_Router from "./routes/category_route.js";
 import solutionRouter from "./routes/solution_route.js";
+import report_router from "./routes/report_route.js"
 
 import Users from "./models/user_model.js";
 import Organizations from "./models/organization_model.js";
@@ -23,6 +24,7 @@ import Indicators from "./models/indicators_model.js";
 import IndicatorsHasIssues from "./models/indicators_issues_model.js";
 import Categories from "./models/category_model.js";
 import Solutions from "./models/solution_model.js";
+
 
 dotenv.config()
 
@@ -87,6 +89,7 @@ app.use(organizationsRouter);
 app.use(indicatorRouter);
 app.use(category_Router);
 app.use(solutionRouter);
+app.use(report_router);
 
 // var routes = require("./routes/routes.js")(app);
 
