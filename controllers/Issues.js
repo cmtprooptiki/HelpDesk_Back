@@ -1,14 +1,15 @@
 import Issue from "../models/issue_model.js";
 import Organization from "../models/organization_model.js"; // optional for include
 import Categories from "../models/category_model.js";
-import OpenAI from "openai";
+import Solutions from "../models/solution_model.js";
+// import OpenAI from "openai";
 import dotenv from "dotenv";
 dotenv.config();
 
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-});
+// const openai = new OpenAI({
+//   apiKey: process.env.OPENAI_API_KEY
+// });
 
 // GET all issues
 export const getIssues = async (req, res) => {
@@ -25,7 +26,8 @@ export const getIssues = async (req, res) => {
                 }],
             attributes: {
                 exclude: ['organizations_id', 'categories_id']
-            }
+            },
+            order: [['updatedAt', 'DESC']]
         });
         res.status(200).json(response);
     } catch (error) {
@@ -120,31 +122,32 @@ export const createIssue = async (req, res) => {
         category_id,
         solution_id
     } = req.body;
+    const keywords=null
 
     try {
         // ✅ GPT-4 keyword extraction using correct v4 method
-        const openaiRes = await openai.chat.completions.create({
-            model: "gpt-4",
-            messages: [
-                {
-                    role: "system",
-                    content: "Extract 3 to 5 short, technical keywords or phrases from the issue description. Return them in comma-separated format. No hashtags or explanations."
-                },
-                {
-                    role: "user",
-                    content: description
-                }
-            ]
-        });
+    //     const openaiRes = await openai.chat.completions.create({
+    //         model: "gpt-4",
+    //         messages: [
+    //             {
+    //                 role: "system",
+    //                 content: "Extract 3 to 5 short, technical keywords or phrases from the issue description. Return them in comma-separated format. No hashtags or explanations."
+    //             },
+    //             {
+    //                 role: "user",
+    //                 content: description
+    //             }
+    //         ]
+    //     });
 
-        const keywordRaw = openaiRes.choices[0].message.content.trim(); // e.g. "vpn, remote access, error"
-       // const keywords = keywordRaw.toLowerCase().replace(/\s+/g, '_'); // optional normalization
+    //     const keywordRaw = openaiRes.choices[0].message.content.trim(); // e.g. "vpn, remote access, error"
+    //    // const keywords = keywordRaw.toLowerCase().replace(/\s+/g, '_'); // optional normalization
 
-        const keywords = keywordRaw
-          .toLowerCase()
-          .split(",")
-          .map((k) => k.trim().replace(/\s+/g, "-"))
-          .join(",");
+    //     const keywords = keywordRaw
+    //       .toLowerCase()
+    //       .split(",")
+    //       .map((k) => k.trim().replace(/\s+/g, "-"))
+    //       .join(",");
 
 
         // ✅ Save issue with extracted keywords
@@ -234,6 +237,16 @@ export const updateIssue = async (req, res) => {
                 id: issue.id
             }
         });
+
+        if ((status === "open" || status === "in-progress") && solution_id) {
+            await Solutions.destroy({
+                where: {
+                    id: solution_id
+                }
+            });
+        }
+
+
         res.status(200).json({ msg: "Issue updated successfully" });
     } catch (error) {
         res.status(400).json({ msg: error.message });
