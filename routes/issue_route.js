@@ -12,7 +12,7 @@ import { verifyUser, adminOnly } from "../middleware/auth_user.js";
 const router = express.Router();
 
 // GET all issues (admin only)
-router.get('/issues', verifyUser, adminOnly, getIssues);
+router.get('/issues', verifyUser, getIssues);
 
 // GET issue by ID (admin only)
 router.get('/issues/:id', verifyUser,getIssueById);

@@ -26,7 +26,7 @@ import {
     updateUser,
     deleteUser
 } from "../controllers/Users.js";
-import { verifyUser, adminOnly } from "../middleware/auth_user.js";
+import { verifyUser, adminOnly,selfOrAdmin } from "../middleware/auth_user.js";
 //import { upload } from "../middleware/multer-config.js";  // Import multer config
 
 const router = express.Router();
@@ -36,9 +36,9 @@ router.get('/users', verifyUser, getUsers);
 router.get('/users/:id', verifyUser,  getUserById);
 
 // Profile image upload routes
-router.post('/users' ,createUser);
-router.patch('/users/:id', verifyUser,  updateUser);
+router.post('/users' ,verifyUser,adminOnly,createUser);
+router.patch('/users/:id', verifyUser,selfOrAdmin,  updateUser);
 
-router.delete('/users/:id', verifyUser, deleteUser);
+router.delete('/users/:id', verifyUser,adminOnly, deleteUser);
 
 export default router;

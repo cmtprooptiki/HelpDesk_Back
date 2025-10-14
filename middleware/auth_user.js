@@ -34,3 +34,22 @@ export const adminOnly = async (req,res,next)=>{
 
     next();
 }
+
+export const selfOrAdmin = async (req, res, next) => {
+  try {
+    const user = await User.findOne({
+      where: { uuid: req.session.userId },
+    });
+
+    if (!user) return res.status(404).json({ msg: "User not found" });
+
+    // Allow if admin OR accessing own account
+    if (user.role === "admin" || user.uuid == req.params.id) {
+      return next();
+    }
+
+    return res.status(403).json({ msg: "Access forbidden" });
+  } catch (err) {
+    return res.status(500).json({ msg: "Server error", error: err.message });
+  }
+};

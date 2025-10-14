@@ -94,3 +94,10 @@ GET http://localhost:5000/issues
 
 ######
 GET http://localhost:5000/issues/user/1
+
+
+######
+GET http://localhost:5000/reports/assistant?month=2025-05
+
+###
+GET http://localhost:5000/solutions_with_issues

@@ -4,7 +4,8 @@ import {
     getSolutionById,
     createSolution,
     updateSolution,
-    deleteSolution
+    deleteSolution,
+    getSolutionsWithIssues
 } from "../controllers/Solutions.js";
 
 import { verifyUser, adminOnly } from "../middleware/auth_user.js";
@@ -12,18 +13,21 @@ import { verifyUser, adminOnly } from "../middleware/auth_user.js";
 const router = express.Router();
 
 // GET all solutions (admin only)
-router.get('/solutions', verifyUser, adminOnly, getSolutions);
+router.get('/solutions', verifyUser,  getSolutions);
 
 // GET solution by ID
-router.get('/solutions/:id', verifyUser, adminOnly, getSolutionById);
+router.get('/solutions/:id', verifyUser, getSolutionById);
 
 // POST new solution
-router.post('/solutions', verifyUser, adminOnly, createSolution);
+router.post('/solutions', verifyUser,  createSolution);
 
 // PATCH update solution
-router.patch('/solutions/:id', verifyUser, adminOnly, updateSolution);
+router.patch('/solutions/:id', verifyUser,  updateSolution);
 
 // DELETE solution
-router.delete('/solutions/:id', verifyUser, adminOnly, deleteSolution);
+router.delete('/solutions/:id', verifyUser,  deleteSolution);
+
+router.get('/solutions_with_issues', getSolutionsWithIssues);
+
 
 export default router;

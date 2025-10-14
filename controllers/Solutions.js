@@ -1,4 +1,9 @@
 import Solutions from "../models/solution_model.js";
+import { literal } from "sequelize";
+import Issues from "../models/issue_model.js";
+import Organizations from "../models/organization_model.js";
+import Categories from "../models/category_model.js";
+import Users from "../models/user_model.js";
 
 // GET all solutions
 export const getSolutions = async (req, res) => {
@@ -87,4 +92,34 @@ export const deleteSolution = async (req, res) => {
     } catch (error) {
         res.status(400).json({ msg: error.message });
     }
+};
+
+
+///
+
+export const getSolutionsWithIssues = async (req, res) => {
+  try {
+    const rows = await Solutions.findAll({
+      // include all solution columns
+      attributes: { exclude: [] },
+      include: [
+        {
+          model: Issues,            // JOIN on issues.solution_id = solutions.id
+          attributes: ["id", "description", "assigned_to"],
+          required: false,          // LEFT JOIN -> include solutions with zero issues
+        },
+      ],
+      // optional ordering: solutions by id, then their issues by id desc
+      order: [
+        ["updatedAt", "DESC"],
+        [Issues, "id", "DESC"],
+      ],
+    });
+
+
+
+    res.status(200).json(rows);
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
 };
