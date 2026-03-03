@@ -105,14 +105,12 @@ export const getIssueById = async (req, res) => {
 export const createIssue = async (req, res) => {
     const {
         description,
-        priority,
+        responsibility,
         status,
         severity,
         assigned_to,
         started_by,
         petitioner_name,
-        contact_type,
-        contact_value,
         related_to_indicators,
         indicator_code,
         organizations_id,
@@ -153,14 +151,12 @@ export const createIssue = async (req, res) => {
         // ✅ Save issue with extracted keywords
         const issue = await Issue.create({
             description,
-            priority,
+            responsibility,
             status,
             severity,
             assigned_to,
             started_by,
             petitioner_name,
-            contact_type,
-            contact_value,
             related_to_indicators,
             indicator_code,
             organizations_id,
@@ -195,14 +191,12 @@ export const updateIssue = async (req, res) => {
 
     const {
         description,
-        priority,
+        responsibility,
         status,
         severity,
         assigned_to,
         started_by,
         petitioner_name,
-        contact_type,
-        contact_value,
         related_to_indicators,
         indicator_code,
         organizations_id,
@@ -216,14 +210,12 @@ export const updateIssue = async (req, res) => {
     try {
         await Issue.update({
             description,
-            priority,
+            responsibility,
             status,
             severity,
             assigned_to,
             started_by,
             petitioner_name,
-            contact_type,
-            contact_value,
             related_to_indicators,
             indicator_code,
             organizations_id,

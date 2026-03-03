@@ -16,7 +16,7 @@ const Issues = db.define("issues", {
     description: {
         type: DataTypes.TEXT
     },
-    priority: {
+    responsibility: {
         type: DataTypes.STRING
     },
     status: {
@@ -33,12 +33,6 @@ const Issues = db.define("issues", {
         type: DataTypes.STRING
     },
     petitioner_name: {
-        type: DataTypes.STRING
-    },
-    contact_type: {
-        type: DataTypes.STRING
-    },
-    contact_value: {
         type: DataTypes.STRING
     },
     related_to_indicators: {
