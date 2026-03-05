@@ -16,6 +16,9 @@ const Issues = db.define("issues", {
     description: {
         type: DataTypes.TEXT
     },
+    impact: {
+        type: DataTypes.TEXT
+    },
     responsibility: {
         type: DataTypes.STRING
     },

@@ -105,6 +105,7 @@ export const getIssueById = async (req, res) => {
 export const createIssue = async (req, res) => {
     const {
         description,
+        impact,
         responsibility,
         status,
         severity,
@@ -151,6 +152,7 @@ export const createIssue = async (req, res) => {
         // ✅ Save issue with extracted keywords
         const issue = await Issue.create({
             description,
+            impact,
             responsibility,
             status,
             severity,
@@ -191,6 +193,7 @@ export const updateIssue = async (req, res) => {
 
     const {
         description,
+        impact,
         responsibility,
         status,
         severity,
@@ -210,6 +213,7 @@ export const updateIssue = async (req, res) => {
     try {
         await Issue.update({
             description,
+            impact,
             responsibility,
             status,
             severity,
