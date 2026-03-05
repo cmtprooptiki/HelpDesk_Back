@@ -32,7 +32,7 @@ const Issues = db.define("issues", {
     started_by: {
         type: DataTypes.STRING
     },
-    petitioner_name: {
+    role_in_the_organization: {
         type: DataTypes.STRING
     },
     related_to_indicators: {
