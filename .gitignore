@@ -27,7 +27,7 @@ dist-ssr
 
 # Environment variables
 .env
-
+.env.example
 #python
 .venv
 __pycache__
